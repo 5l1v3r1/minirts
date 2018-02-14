@@ -2,7 +2,7 @@ import numpy as np
 from rtsenv import RTSEnv
 
 class Towers(RTSEnv):
-    def __init__(self, quadrant_size=4):
+    def __init__(self, quadrant_size=5):
         self.qsize = quadrant_size
         self.labels = ['health', 'agent', 'small', 'large', 'friends', 'enemies']
 
@@ -14,10 +14,11 @@ class Towers(RTSEnv):
         return self.obs.copy()
 
     def step(self, action, verbose=False):
+        obs = self.obs ; qsize = self.qsize
         health, agent, small, large, friends, enemies = obs[0], obs[1], obs[2], obs[3], obs[4], obs[5]
         agent_health = (health*agent).sum()
-        xi = 0 if action in [0,3] else self.qsize
-        yi = 0 if action in [0,1] else self.qsize
+        xi = 0 if action in [0,3] else qsize
+        yi = 0 if action in [0,1] else qsize
         tower_health = 0.5*small[xi:xi+qsize,yi:yi+qsize]*health[xi:xi+qsize,yi:yi+qsize] + \
                        1.5*large[xi:xi+qsize,yi:yi+qsize]*health[xi:xi+qsize,yi:yi+qsize]
         tower_health = tower_health.sum()
