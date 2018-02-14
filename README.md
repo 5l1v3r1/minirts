@@ -13,7 +13,7 @@ About
    * Learn about the agent [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-agent.ipynb)
  * We (sort of) visualize what the agent has learned
    * We use a perturbation-based saliency approach.
-   * Learn about the perturbation and look at results [here](https://github.com/greydanus/minirts/blob/master/minirts-saliency.ipynb)
+   * Learn about the perturbation and look at results [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-saliency.ipynb)
   
 RTS tower setup
 --------
