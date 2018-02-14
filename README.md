@@ -6,25 +6,28 @@ _Written in PyTorch_
 About
 --------
  * We introduce a simple RTS environment called **"Towers"**
-  * Technically, it's a conditional multi-armed bandits environment.
-  * Learn about the environment [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-env.ipynb)
+   * Technically, it's a conditional multi-armed bandits environment.
+   * Learn about the environment [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-env.ipynb)
  * We train a simple agent to solve this environment
-  * It's a policy gradient algorithm. I add a value estimator just for kicks :)
-  * Learn about the agent [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-agent.ipynb)
+   * It's a policy gradient algorithm. I add a value estimator just for kicks :)
+   * Learn about the agent [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-agent.ipynb)
  * We (sort of) visualize what the agent has learned
-  * We use a perturbation-based saliency approach.
-  * Learn about the perturbation and look at results [here](https://github.com/greydanus/minirts/blob/master/minirts-saliency.ipynb)
+   * We use a perturbation-based saliency approach.
+   * Learn about the perturbation and look at results [here](https://github.com/greydanus/minirts/blob/master/minirts-saliency.ipynb)
   
 RTS tower setup
 --------
-More on this in the `minirts-saliency` notebook:
 ![tower-rts-conventions.png](static/tower-rts-conventions.png)
+
 Each tower is positioned randomly in its quadrant. Each quadrant is a 5x5 pixel square. The agent always gets placed in the center of the RTS space...which ends up being pixel (5,5) in the 10x10 pixel gamespace.
+
+More on this in the `minirts-saliency` notebook.
 
 Reward landscape
 --------
-More on this in the `minirts-saliency` notebook:
 ![attack-preference.png](static/attack-preference.png)
+
+More on this in the `minirts-saliency` notebook.
   
 Dependencies
 --------
