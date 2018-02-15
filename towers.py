@@ -14,25 +14,31 @@ class Towers(RTSEnv):
         return self.obs.copy()
 
     def step(self, action, verbose=False):
-        qsize = self.qsize ; obs = self.obs
-        health, agent, small, large, friends, enemies = obs[0], obs[1], obs[2], obs[3], obs[4], obs[5]
-        agent_health = (health*agent).sum()
-        xi = 0 if action in [0,3] else qsize
-        yi = 0 if action in [0,1] else qsize
-        tower_health = ((1-agent[xi:xi+qsize,yi:yi+qsize])*health[xi:xi+qsize,yi:yi+qsize]).sum()
-        if verbose: print('tower health', tower_health, '\tagent health', agent_health)
-        reward = tower_health if tower_health < agent_health else -3.
+        reward = self.get_reward(action, verbose)
         state = None ; done = True ; info = {}
         return state, reward, done, info
+    
+    def get_reward(self, action, verbose=False):
+        xi = 0 if action in [1,2] else self.qsize
+        yi = 0 if action in [1,0] else self.qsize
+        obs_quadrant = self.obs.copy()[:, yi:yi+self.qsize, xi:xi+self.qsize]
+        health, agent, small, large, friends, enemies = obs_quadrant # split channels
+        health += (0.5-1)*(small*health) # small towers get a health in range (0,0.5)
+        health += (1.5-1)*(large*health) # large towers get a health in range (0,1.5)
+        agent_health = (self.obs[0]*self.obs[1]).sum()
+        
+        tower_health = (1-agent)*health
+        tower_health += -2*friends*tower_health # friends contribute negative points
+        tower_health = tower_health.sum() # sum up
+        if verbose: print(xi, yi, 'tower health', tower_health, '\tagent health', agent_health)
+        return tower_health if tower_health < agent_health else -1.
     
     def get_observation(self):
         channels = [self.get_health_mask(self.qsize)]
         channels += [self.get_agent_mask(self.qsize)]
         channels += self.get_tower_masks(self.qsize, channels[0])
         channels += self.get_team_masks(self.qsize, channels[0])
-        channels[0] += np.abs(channels[1]*np.random.randn())     # add the agent to the health channel
-        channels[0] += (0.5-1)*(channels[2]*channels[0]) # small towers get a health in range (0,0.5)
-        channels[0] += (1.5-1)*(channels[3]*channels[0]) # large towers get a health in range (0,1.5)
+        channels[0] += np.abs(channels[1]*np.random.rand())     # add the agent to the health channel
         return np.stack(channels)
     
     @staticmethod
@@ -41,7 +47,7 @@ class Towers(RTSEnv):
         for i in range(2):
             for j in range(2):
                 ix = (np.random.randint(qsize*i, qsize*(i+1)), np.random.randint(qsize*j, qsize*(j+1)))
-                channel[ix] = np.random.randn()
+                channel[ix] = np.random.rand()
         return channel
     
     @staticmethod
@@ -59,6 +65,6 @@ class Towers(RTSEnv):
     @staticmethod
     def get_team_masks(qsize, health_channel):
         tower_exists = health_channel != 0
-        friends = health_channel < 0
-        enemies = health_channel > 0 # this is a redundant layer...but whatever
-        return [friends, enemies] #[team1*tower_exists, team2*tower_exists]
+        friends = np.random.rand(qsize*2, qsize*2) > 0.5
+        enemies = 1-friends # this is a redundant layer...but whatever
+        return [friends*tower_exists, enemies*tower_exists]
