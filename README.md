@@ -12,8 +12,8 @@ About
    * It's a policy gradient algorithm. I add a value estimator just for kicks :)
    * Learn about the agent [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-agent.ipynb)
  * We (sort of) visualize what the agent has learned
-   * We use a perturbation-based saliency approach.
-   * Learn about the perturbation and look at results [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-saliency.ipynb)
+   * Perturbation-based saliency [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-saliency.ipynb)
+   * Contrastive excitation backprop [here](https://nbviewer.jupyter.org/github/greydanus/minirts/blob/master/minirts-saliency-eb.ipynb)
   
 RTS tower setup
 --------
